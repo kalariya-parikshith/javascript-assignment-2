@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Restaurant</title>
+	<link rel="stylesheet" type="text/css" href="css/index.css">
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
+</head>
+<body>
+	<div id="tablesDiv">
+		<center class="table_heading">Tables</center>
+		<center>
+			<input type="text" id="searchTableBox" onkeyup="searchTable()" placeholder="Search for tables.." title="Enter table name">
+		</center>
+	</div>
+	<div class="menu_div">
+		<center class="menu_heading">Menu</center>
+		<br>
+		<center>
+			<input type="text" id="searchItemBox" onkeyup="searchItem()" placeholder="Search for Items.." title="Enter item name">
+		</center>
+		<center>
+			<ul id="listOfItems">
+  
+  			</ul>
+		</center>
+	</div>
+	<div id="orderDetailsDiv">
+  		<div class="order_details_contents">
+		    <div class="order_details_header">
+		      <span id="closeOrderDetailsDiv">&times;</span>
+		      <h2><span id="orderDetailsHeading"></span> | Order Details</h2>
+		    </div>
+		    <div class="order_details_body">
+		      	<table id="orderDetailsTable">
+
+				</table>
+				<p id="totalBillOfTable"></p>
+		    </div>
+		</div>
+	</div>
+</body>
+<script type="text/javascript" src="js/index.js"></script>
+</html>
+
+<!-- 
+<div id="orderDetailsDiv">
+			<div class="order_details_contents">
+			<div class="orderDetailsHeading">
+      			<span class="close">&times;</span>
+      			<h2>Order Details</h2>
+    		</div>
+			<table id="orderDetailsOnPopup">
+			  <tr>
+			    <th>Serial No.</th>
+			    <th>Item</th>
+			    <th>Price</th>
+			    <th>No. of Servings</th>
+			    <th>remove</th>
+			  </tr>
+			</table>
+			</div>
+		</div> -->
