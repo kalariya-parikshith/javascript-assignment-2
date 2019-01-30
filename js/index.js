@@ -47,7 +47,13 @@ getNthItemIdOnTable = function(tableNumber, NthItem) {
 }
 
 getNthItemNameOnTable = function(tableNumber, NthItem) {
-	
+	var itemId = getNthItemIdOnTable(tableNumber, NthItem);
+	return getItemName(itemId);
+}
+
+getNthItemPriceOnTable = function(tableNumber, NthItem) {
+	var itemId = getNthItemIdOnTable(tableNumber, NthItem);
+	return getItemPrice(itemId);
 }
 
 getNthItemServingOnTable = function(tableNumber, NthItem) {
@@ -74,9 +80,24 @@ incrementItemServingOnTable = function(tableNumber, itemId) {
 	}
 }
 
+getTotalBillOfATable = function(tableNumber) {
+	var totalBill = 0;
+	for(var NthItem=0; NthItem<tablesArray[tableNumber].length; NthItem++){
+		totalBill += getNthItemPriceOnTable(tableNumber, NthItem)*getNthItemServingOnTable(tableNumber, NthItem);
+	}
+	return totalBill;
+}
+
+getTotalNumberOfItemsOnTable = function(tableNumber) {
+	return tablesArray[tableNumber].length;
+}
+
+displayBillAndNumberOfItemsOnTable = function(tableNumber, totalBill, totalItems) {
+	document.getElementById(tableNumber).innerHTML = "Table "+ (tableNumber) + "<br>Rs. "+totalBill+" | Total items: "+totalItems;
+}
+
 document.addEventListener("dragstart", function(event) {
 	event.dataTransfer.setData("itemId",event.target.id);
-	console.log(event.target.id);
 },false);
 
 document.addEventListener("dragover", function(event) {
@@ -95,12 +116,9 @@ document.addEventListener("drop", function(event) {
 		tablesArray[parseInt(tableNumber)].push(itemId+","+"1");
 	}
 
-	var totalBill = 0;
-	var totalItems = tablesArray[tableNumber].length;
-	for(var NthItem=0; NthItem<tablesArray[tableNumber].length; NthItem++){
-		totalBill += getItemPrice(tableNumber, NthItem)*getNthItemServingOnTable(tableNumber, NthItem);
-	}
-	document.getElementById(i).innerHTML = "Table "+ (i) + "<br>Rs. "+totalBill+" | Total items: "+totalItems;
+	var totalBill = getTotalBillOfATable(tableNumber);
+	var totalItems = getTotalNumberOfItemsOnTable(tableNumber);
+	displayBillAndNumberOfItemsOnTable(tableNumber, totalBill, totalItems);
 },false);
 
 
@@ -129,52 +147,72 @@ addHeaderForOrderDetails = function() {
 	removeItem.innerHTML="remove";
 	document.getElementById('tableHead').appendChild(removeItem);
 }
+removeItemOnTable = function(tableNumber, NthItem) {
+	tablesArray[tableNumber].splice(NthItem,1);
+	displayTableDetails(tableNumber);
+}
 
-displayTableDetails = function(tableNumber) {
-  document.getElementById('orderDetailsHeading').innerHTML = "Table "+tableNumber;
-  document.getElementById('orderDetailsTable').innerHTML = "";
-  addHeaderForOrderDetails();
-  var totalBill = 0;
-  for(var NthItem = 0; NthItem < tablesArray[tableNumber].length; NthItem++){
-    var itemDetailsOnTable = document.createElement('TR');
-    itemDetailsOnTable.id = "itemOnTable"+i;
+removeAllItemsOnTable = function(tableNumber) {
+	while(tablesArray[tableNumber].length > 0) {
+		removeItemOnTable(tableNumber, 0);
+	}
+}
+
+detailsOfItemsOnTable = function(tableNumber, NthItem) {
+	var itemDetailsOnTable = document.createElement('TR');
+    itemDetailsOnTable.id = "itemOnTable"+NthItem;
     document.getElementById('orderDetailsTable').appendChild(itemDetailsOnTable);
 
     var serialNumberOnTable = document.createElement('TD');
-    serialNumberOnTable.innerHTML = i+1;
-    document.getElementById('itemOnTable'+i).appendChild(serialNumberOnTable);
+    serialNumberOnTable.innerHTML = NthItem+1;
+    document.getElementById('itemOnTable'+NthItem).appendChild(serialNumberOnTable);
 
     var itemNameOnTable = document.createElement('TD');
-    itemNameOnTable.innerHTML = getItemName(tableNumber, NthItem);
-    document.getElementById('itemontable'+i).appendChild(itemNameOnTable);
+    itemNameOnTable.innerHTML = getNthItemNameOnTable(tableNumber, NthItem);
+    document.getElementById('itemOnTable'+NthItem).appendChild(itemNameOnTable);
 
-    var newTdpriceOfItem = document.createElement('TD');
-    newTdpriceOfItem.innerHTML = tablesArray[tableNumber][i].split(",")[2];
-    document.getElementById('itemontable'+i).appendChild(newTdpriceOfItem);
+    var priceOfItemOnTable = document.createElement('TD');
+    priceOfItemOnTable.innerHTML = getNthItemPriceOnTable(tableNumber, NthItem);
+    document.getElementById('itemOnTable'+NthItem).appendChild(priceOfItemOnTable);
 
-    var newTdquantity = document.createElement('TD');
-    newTdquantity.innerHTML = tablesArray[tableNumber][i].split(",")[3];
-    document.getElementById('itemontable'+i).appendChild(newTdquantity);
+    var itemServingOnTable = document.createElement('TD');
+    itemServingOnTable.innerHTML = getNthItemServingOnTable(tableNumber, NthItem);
+    document.getElementById('itemOnTable'+NthItem).appendChild(itemServingOnTable);
 
     var removeIcon = document.createElement('i');
     removeIcon.className = "material-icons";
     removeIcon.innerHTML = "delete";
+    removeIcon.id = "remove"+NthItem;
+    removeIcon.setAttribute("onclick",'removeItemOnTable('+tableNumber+','+NthItem+')');
 
     var removeIconTd = document.createElement('TD');
-    removeIcon.id = "remove"+i;
     removeIconTd.appendChild(removeIcon);
-    document.getElementById('itemontable'+i).appendChild(removeIconTd);
+    document.getElementById('itemOnTable'+NthItem).appendChild(removeIconTd);
+}
 
-    totalBill += parseInt(tablesArray[tableNumber][i].split(",")[2])*parseInt(tablesArray[tableNumber][i].split(",")[3]);
+displayTableDetails = function(tableNumber) {
+	document.getElementById('orderDetailsHeading').innerHTML = "Table "+tableNumber;
+	document.getElementById('orderDetailsTable').innerHTML = "";
+	addHeaderForOrderDetails();
+	var totalBill = getTotalBillOfATable(tableNumber);
+	var totalItems = getTotalNumberOfItemsOnTable(tableNumber);
+	displayBillAndNumberOfItemsOnTable(tableNumber, totalBill, totalItems);
 
-  }
-  document.getElementById('totalBillOfTable').innerHTML = "Total: "+totalBill;
-  document.getElementById('orderDetailsDiv').style.display = 'block';
+	for(var NthItem = 0; NthItem < tablesArray[tableNumber].length; NthItem++) {
+		detailsOfItemsOnTable(tableNumber, NthItem);
+	}
+
+	document.getElementById('totalBillOfTable').innerHTML = "Total: "+totalBill;
+	document.getElementById('orderDetailsDiv').style.display = 'block';
 }
 
 document.getElementById('closeOrderDetailsDiv').addEventListener('click', function(){
   document.getElementById('orderDetailsDiv').style.display = 'none';
-});
+}, false);
+document.getElementById("generateBill").addEventListener('click', function(){
+	removeAllItemsOnTable(tableClicked);
+	document.getElementById('orderDetailsDiv').style.display = 'none';
+}, false);
 
 tablesOfDiv = document.getElementById("tablesDiv").getElementsByTagName('div');
 for(var i=0 ; i<tablesOfDiv.length; i++) {
@@ -183,27 +221,6 @@ for(var i=0 ; i<tablesOfDiv.length; i++) {
     displayTableDetails(event.target.id);
   },false);
 }
-
-removeItemFromTheTable = function(itemId) {
-  for(var i=0; i<tablesArray[tableClicked].length; i++) {
-    if(parseInt(tablesArray[tableClicked][i].split(",")[0] == parseInt(itemId))) {
-      tablesArray[tableClicked][i].splice(i,1);
-      return;
-    }
-  }
-}
-
-orderDetailsOnPopup1 = document.getElementById("orderDetailsTable").childNodes;
-for(var i=0; i<orderDetailsOnPopup1.length; i++) {
-  console.log(orderDetailsOnPopup1[i].id);
-  // orderDetailsOnPopup1[i].addEventListener('click', function(event){
-
-    // removeItemFromTheTable(event.target.id);
-    // console.log(tablesArray);
-    // displayTableDetails(tableClicked);
-  // },false);
-}
-
 
 var items = JSON.parse('[{"items":[{"id":"1","name":"Veg biryani","rate":"210","course":"main veg"},{"id":"2","name":"Paneer biryani","rate":"250","course":"main veg"},{"id":"3","name":"Paneer butter masala","rate":"150","course":"main curry"},{"id":"4","name":"Chicken biryani","rate":"250","course":"main nonveg"},{"id":"5","name":"Mutton biryani","rate":"300","course":"main nonveg"},{"id":"6","name":"Papad","rate":"50","course":"starter"},{"id":"7","name":"Shahi tukda","rate":"80","course":"sweet desert"}]}]');
 

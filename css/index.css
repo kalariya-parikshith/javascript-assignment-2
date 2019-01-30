@@ -143,3 +143,6 @@
 .material-icons{
 	cursor: pointer;
 }
+#generateBill {
+	cursor: pointer;
+}
