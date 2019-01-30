@@ -28,9 +28,6 @@
   	box-shadow: 2px 2px grey;
   	text-align: left;
 }
-.tableCost{
-
-}
 .menu_div {
 	top: 0;
 	right: 0;
@@ -103,6 +100,13 @@
   border: 1px solid #888;
   width: 80%;
 }
+.order_details_header {
+  padding: 2px 16px;
+  background-color: blue;
+  color: white;
+  width: 97%;
+  text-align: center;
+}
 #closeOrderDetailsDiv {
   color: white;
   float: right;
@@ -116,15 +120,6 @@
   text-decoration: none;
   cursor: pointer;
 }
-
-.order_details_header {
-  padding: 2px 16px;
-  background-color: blue;
-  color: white;
-  width: 97%;
-  text-align: center;
-}
-
 .order_details_body {
 	padding: 2px 16px;
 	width: 100%;
@@ -135,10 +130,6 @@
 }
 #tableHead {
 	width: 100%;
-}
-.totalBillElement {
-	width: 100%;
-	text-align: center;
 }
 .material-icons{
 	cursor: pointer;

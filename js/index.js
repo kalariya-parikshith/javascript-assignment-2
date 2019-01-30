@@ -1,29 +1,29 @@
 var numberOfTables = 5;
-var tablesArray;
+var tableOrders;
 var tableClicked;
 
-createArrayForTables = function() {
-	tablesArray = new Array();
-	for(var i=0; i<=numberOfTables; i++) {
-		tablesArray.push(new Array());
-	}
-}
-createArrayForTables();
-
 createTables = function() {
-	for(var i=1; i<=numberOfTables; i++) {
-		var div = document.createElement('DIV');
-		div.className = "table";
-		div.id = i;
-		div.innerHTML = "Table "+ (i) + "<br>Rs. 0 | Total items: 0";
-		document.getElementById('tablesDiv').appendChild(div);
+	for(tableIndex = 1; tableIndex <= numberOfTables; tableIndex++) {
+		var newTable = document.createElement('DIV');
+		newTable.className = "table";
+		newTable.id = tableIndex;
+		newTable.innerHTML = "Table "+ (tableIndex) + "<br>Rs. 0 | Total items: 0";
+		document.getElementById('tablesDiv').appendChild(newTable);
 	}
 }
 createTables();
 
+createTableOrdersArray = function() {
+	tableOrders = new Array();
+	for(tableIndex = 0; tableIndex <= numberOfTables; tableIndex++) {
+		tableOrders.push(new Array());
+	}
+}
+createTableOrdersArray();
+
 getItemName = function(itemId) {
 	var itemName;
-	items[0].items.forEach(function(obj) {
+	items.items.forEach(function(obj) {
 		if(parseInt(obj.id) == parseInt(itemId)) {
 			itemName = obj.name;
 		}
@@ -33,7 +33,7 @@ getItemName = function(itemId) {
 
 getItemPrice = function(itemId) {
 	var itemPrice;
-	items[0].items.forEach(function(obj) {
+	items.items.forEach(function(obj) {
 		if(parseInt(obj.id) == parseInt(itemId)) {
 			itemPrice = obj.rate;
 		}
@@ -42,7 +42,7 @@ getItemPrice = function(itemId) {
 }
 
 getNthItemIdOnTable = function(tableNumber, NthItem) {
-	var itemId = tablesArray[tableNumber][NthItem].split(",")[0];
+	var itemId = tableOrders[tableNumber][NthItem].split(",")[0];
 	return parseInt(itemId);
 }
 
@@ -57,17 +57,17 @@ getNthItemPriceOnTable = function(tableNumber, NthItem) {
 }
 
 getNthItemServingOnTable = function(tableNumber, NthItem) {
-	var noOfServings = tablesArray[tableNumber][NthItem].split(",")[1];
+	var noOfServings = tableOrders[tableNumber][NthItem].split(",")[1];
 	return parseInt(noOfServings);
 }
 
 setNthItemServingOnTable = function(tableNumber, NthItem, numberOfServingOfNthItem) {
-	tablesArray[tableNumber][NthItem] = 
+	tableOrders[tableNumber][NthItem] = 
 			getNthItemIdOnTable(tableNumber, NthItem) +','+ numberOfServingOfNthItem;
 }
 
 isItemPresentOnTable = function(tableNumber, itemId) {
-	for(var NthItem = 0; NthItem < tablesArray[tableNumber].length; NthItem++) {
+	for(var NthItem = 0; NthItem < tableOrders[tableNumber].length; NthItem++) {
 		if(getNthItemIdOnTable(tableNumber, NthItem) == parseInt(itemId)) {
 			return true;
 		}
@@ -76,25 +76,25 @@ isItemPresentOnTable = function(tableNumber, itemId) {
 }
 
 incrementItemServingOnTable = function(tableNumber, itemId) {
-	for(var NthItem = 0; NthItem < tablesArray[tableNumber].length; NthItem++) {
+	for(var NthItem = 0; NthItem < tableOrders[tableNumber].length; NthItem++) {
 		if(getNthItemIdOnTable(tableNumber, NthItem) == parseInt(itemId)) {
 			var noOfServings = getNthItemServingOnTable(tableNumber, NthItem);
 			noOfServings++;
-			tablesArray[tableNumber][NthItem] = itemId +","+ noOfServings;
+			tableOrders[tableNumber][NthItem] = itemId +","+ noOfServings;
 		}
 	}
 }
 
 getTotalBillOfATable = function(tableNumber) {
 	var totalBill = 0;
-	for(var NthItem=0; NthItem<tablesArray[tableNumber].length; NthItem++){
+	for(var NthItem=0; NthItem<tableOrders[tableNumber].length; NthItem++){
 		totalBill += getNthItemPriceOnTable(tableNumber, NthItem)*getNthItemServingOnTable(tableNumber, NthItem);
 	}
 	return totalBill;
 }
 
 getTotalNumberOfItemsOnTable = function(tableNumber) {
-	return tablesArray[tableNumber].length;
+	return tableOrders[tableNumber].length;
 }
 
 displayBillAndNumberOfItemsOnTable = function(tableNumber, totalBill, totalItems) {
@@ -118,7 +118,7 @@ document.addEventListener("drop", function(event) {
 		incrementItemServingOnTable(tableNumber, itemId);
 	}
 	else {
-		tablesArray[parseInt(tableNumber)].push(itemId+","+"1");
+		tableOrders[parseInt(tableNumber)].push(itemId+","+"1");
 	}
 
 	var totalBill = getTotalBillOfATable(tableNumber);
@@ -153,12 +153,12 @@ addHeaderForOrderDetails = function() {
 	document.getElementById('tableHead').appendChild(removeItem);
 }
 removeItemOnTable = function(tableNumber, NthItem) {
-	tablesArray[tableNumber].splice(NthItem,1);
+	tableOrders[tableNumber].splice(NthItem,1);
 	displayTableDetails(tableNumber);
 }
 
 removeAllItemsOnTable = function(tableNumber) {
-	while(tablesArray[tableNumber].length > 0) {
+	while(tableOrders[tableNumber].length > 0) {
 		removeItemOnTable(tableNumber, 0);
 	}
 }
@@ -216,7 +216,7 @@ displayTableDetails = function(tableNumber) {
 	var totalItems = getTotalNumberOfItemsOnTable(tableNumber);
 	displayBillAndNumberOfItemsOnTable(tableNumber, totalBill, totalItems);
 
-	for(var NthItem = 0; NthItem < tablesArray[tableNumber].length; NthItem++) {
+	for(var NthItem = 0; NthItem < tableOrders[tableNumber].length; NthItem++) {
 		detailsOfItemsOnTable(tableNumber, NthItem);
 	}
 
@@ -240,7 +240,7 @@ for(var i=0 ; i<tablesOfDiv.length; i++) {
   },false);
 }
 
-var items = JSON.parse('[{"items":[{"id":"1","name":"Veg biryani","rate":"210","course":"main veg"},{"id":"2","name":"Paneer biryani","rate":"250","course":"main veg"},{"id":"3","name":"Paneer butter masala","rate":"150","course":"main curry"},{"id":"4","name":"Chicken biryani","rate":"250","course":"main nonveg"},{"id":"5","name":"Mutton biryani","rate":"300","course":"main nonveg"},{"id":"6","name":"Papad","rate":"50","course":"starter"},{"id":"7","name":"Shahi tukda","rate":"80","course":"sweet desert"}]}]');
+var items = JSON.parse('{"items":[{"id":"1","name":"Veg biryani","rate":"210","course":"main veg"},{"id":"2","name":"Paneer biryani","rate":"250","course":"main veg"},{"id":"3","name":"Paneer butter masala","rate":"150","course":"main curry"},{"id":"4","name":"Chicken biryani","rate":"250","course":"main nonveg"},{"id":"5","name":"Mutton biryani","rate":"300","course":"main nonveg"},{"id":"6","name":"Papad","rate":"50","course":"starter"},{"id":"7","name":"Shahi tukda","rate":"80","course":"sweet desert"}]}');
 
 function searchItem() {
     var input, filter, ul, li, a, i, txtValue;
@@ -269,7 +269,7 @@ searchTable = function() {
   }
 }
 
-items[0].items.forEach(function(obj) {
+items.items.forEach(function(obj) {
   var li = document.createElement('LI');
   li.id = obj.id;
   li.draggable = true;
