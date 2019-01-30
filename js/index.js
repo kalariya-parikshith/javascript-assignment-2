@@ -61,6 +61,11 @@ getNthItemServingOnTable = function(tableNumber, NthItem) {
 	return parseInt(noOfServings);
 }
 
+setNthItemServingOnTable = function(tableNumber, NthItem, numberOfServingOfNthItem) {
+	tablesArray[tableNumber][NthItem] = 
+			getNthItemIdOnTable(tableNumber, NthItem) +','+ numberOfServingOfNthItem;
+}
+
 isItemPresentOnTable = function(tableNumber, itemId) {
 	for(var NthItem = 0; NthItem < tablesArray[tableNumber].length; NthItem++) {
 		if(getNthItemIdOnTable(tableNumber, NthItem) == parseInt(itemId)) {
@@ -158,6 +163,12 @@ removeAllItemsOnTable = function(tableNumber) {
 	}
 }
 
+updateServing = function(tableNumber, NthItem) {
+	var numberOfServingOfNthItem = document.getElementById('itemServing'+NthItem).value;
+	setNthItemServingOnTable(tableNumber, NthItem, numberOfServingOfNthItem);
+	displayTableDetails(tableNumber);
+}
+
 detailsOfItemsOnTable = function(tableNumber, NthItem) {
 	var itemDetailsOnTable = document.createElement('TR');
     itemDetailsOnTable.id = "itemOnTable"+NthItem;
@@ -175,8 +186,15 @@ detailsOfItemsOnTable = function(tableNumber, NthItem) {
     priceOfItemOnTable.innerHTML = getNthItemPriceOnTable(tableNumber, NthItem);
     document.getElementById('itemOnTable'+NthItem).appendChild(priceOfItemOnTable);
 
-    var itemServingOnTable = document.createElement('TD');
-    itemServingOnTable.innerHTML = getNthItemServingOnTable(tableNumber, NthItem);
+    var itemServingOnTable = document.createElement('INPUT');
+    itemServingOnTable.type = "number";
+    itemServingOnTable.min = "1";
+    itemServingOnTable.value = getNthItemServingOnTable(tableNumber, NthItem);
+    itemServingOnTable.id = "itemServing"+NthItem;
+    itemServingOnTable.setAttribute('onchange', 'updateServing('+ tableNumber +','+ NthItem +')');
+
+    var itemServingOnTableTD = document.createElement('TD');
+    itemServingOnTableTD.appendChild(itemServingOnTable);
     document.getElementById('itemOnTable'+NthItem).appendChild(itemServingOnTable);
 
     var removeIcon = document.createElement('i');
