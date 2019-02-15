@@ -20,13 +20,13 @@
 	border: 1px solid #ddd;
 	margin-top: 5%;
 	margin-left: 5%;
-  	padding: 5%;
-  	text-decoration: none;
-  	font-size: 18px;
-  	color: black;
-  	display: block;
-  	box-shadow: 2px 2px grey;
-  	text-align: left;
+	padding: 5%;
+	text-decoration: none;
+	font-size: 18px;
+	color: black;
+	display: block;
+	box-shadow: 2px 2px grey;
+	text-align: left;
 }
 .menu_div {
 	top: 0;
@@ -40,13 +40,13 @@
 	margin-top: 2%;
 }
 #searchItemBox {
-  background-position: 10px 12px;
-  background-repeat: no-repeat;
-  width: 90%;
-  font-size: 16px;
-  padding: 1% 2% 1% 2%;
-  border: 1px solid #ddd;
-  margin-bottom: 1%;
+	background-position: 10px 12px;
+	background-repeat: no-repeat;
+	width: 90%;
+	font-size: 16px;
+	padding: 1% 2% 1% 2%;
+	border: 1px solid #ddd;
+	margin-bottom: 1%;
 }
 #searchTableBox {
 	background-position: 10px 12px;
@@ -58,67 +58,65 @@
 	margin-bottom: 1%;
 }
 #listOfItems {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
+	list-style-type: none;
+	padding: 0;
+	margin: 0;
 }
-
 #listOfItems li {
-  border: 1px solid #ddd;
-  margin-top: 5px;
-  padding: 12px;
-  text-decoration: none;
-  font-size: 18px;
-  color: black;
-  display: block;
-  box-shadow: 2px 2px grey;
-  width: 90%;
-  text-align: left;
+	border: 1px solid #ddd;
+	margin-top: 5px;
+	padding: 12px;
+	text-decoration: none;
+	font-size: 18px;
+	color: black;
+	display: block;
+	box-shadow: 2px 2px grey;
+	width: 90%;
+	text-align: left;
 }
 .course{
-    font-size: 15px;
-    color: blue;
+	font-size: 15px;
+	color: blue;
 }
-
 #orderDetailsDiv {
-  display: none;
-  position: fixed;
-  z-index: 1;
-  padding-top: 100px;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  background-color: rgba(0,0,0,0.4);
+	display: none;
+	position: fixed;
+	z-index: 1;
+	padding-top: 100px;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	overflow: auto;
+	background-color: rgba(0,0,0,0.4);
 }
 .order_details_contents {
-  position: relative;
-  background-color: #fefefe;
-  margin: auto;
-  padding: 0;
-  border: 1px solid #888;
-  width: 80%;
+	position: relative;
+	background-color: #fefefe;
+	margin: auto;
+	padding: 0;
+	border: 1px solid #888;
+	width: 80%;
 }
 .order_details_header {
-  padding: 2px 16px;
-  background-color: blue;
-  color: white;
-  width: 97%;
-  text-align: center;
+	padding: 2px 16px;
+	background-color: blue;
+	color: white;
+	width: 97%;
+	text-align: center;
 }
 #closeOrderDetailsDiv {
-  color: white;
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
+	color: white;
+	float: right;
+	font-size: 28px;
+	font-weight: bold;
 }
 
 #closeOrderDetailsDiv:hover,
 #closeOrderDetailsDiv:focus {
-  color: #000;
-  text-decoration: none;
-  cursor: pointer;
+	color: #000;
+	text-decoration: none;
+	cursor: pointer;
 }
 .order_details_body {
 	padding: 2px 16px;
